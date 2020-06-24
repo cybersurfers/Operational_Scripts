@@ -1,8 +1,12 @@
 #########################
-# Author: 404unf	#
+# Author: 404unf		#
 # Team: CyberSurfers	#
 # Creation: March 2020	#
+# Update: June 2020		#
 #########################
+
+# This Script is designed for Python3.x
+# DEPENDENCIES include Nmap: https://nmap.org/
 
 import os
 
@@ -12,9 +16,9 @@ def main():
 def mainMenu():
 	print("""
 
-**********Pre-Canned Network Scans************
-**********for standardize information gathering**********
-**********Edit as needed**********
+********** Pre-Canned Network Scans					************
+********** For standardized information gathering	************
+********** Edit as needed							************
 
 	""")
 
@@ -34,8 +38,7 @@ def mainMenu():
 		9. Scan 100 most common ports 
 		10. Scan for DNS UDP Ports
 		11. Scan for UDP and TCP ports for a single host
-		12. Save scan to multiples file types
-		14. Exit
+		12. Exit
 			
 		""")
 
@@ -43,31 +46,29 @@ def mainMenu():
 # If the user makes a selection, execute the specified task#
 ############################################################
 
-	if choice == 1:
+	if choice == "1":
 		pingSweep()
-	elif choice == 2:
+	elif choice == "2":
 		listScan()
-	elif choice == 3:
+	elif choice == "3":
 		synScan()
-	elif choice == 4:
+	elif choice == "4":
 		openPorts()
-	elif choice == 5:
+	elif choice == "5":
 		openServices()
-	elif choice == 6:
+	elif choice == "6":
 		allTCP()
-	elif choice == 7:
-		rangeScan()
-	elif choice == 8:
+	elif choice == "7":
+		rangeTCP()
+	elif choice == "8":
 		webScan()
-	elif choice == 9:
+	elif choice == "9":
 		mostCommon()
-	elif choice == 10:
+	elif choice == "10":
 		dnsUDP()
-	elif choice == 11:
+	elif choice == "11":
 		singleHost()
-	elif choice == 12:
-		saveScan()
-	elif choice == 14:
+	elif choice == "12":
 		exit()
 	else:
 		print("Please enter a valid selection.")
@@ -78,40 +79,38 @@ def mainMenu():
 ########################
 
 def pingSweep():
-	os.system('nmap -sn -PE {}'.format(whatSubnet()))
+	os.system('nmap -sn -PE {} {}'.format(whatSubnet(),generateReports()))
 
 def listScan():
-	os.system('nmap -sL {}'.format(whatSubnet()))
+	os.system('nmap -sL {} {}'.format(whatSubnet(), generateReports()))
 
 def synScan():
-	os.system('nmap -Pn {}'.format(whatSubnet()))
+	os.system('nmap -Pn {} {}'.format(whatSubnet(), generateReports()))
 
 def openPorts():
-	os.system('nmap --open {}'.format(whatSubnet()))
+	os.system('nmap --open {} {}'.format(whatSubnet(), generateReports()))
 
 def openServices():
-	os.system('nmap -sV {}'.format(whatSubnet()))
+	os.system('nmap -sV {} {}'.format(whatSubnet(), generateReports()))
 
 def allTCP():
-	os.system('nmap -p 1-65535 {}'.format(whatSubnet()))
+	os.system('nmap -p 1-65535 {} {}'.format(whatSubnet(), generateReports()))
 
 def rangeTCP():
-	os.system('nmap -p 80-1024 {}'.format(whatSubnet()))
+	os.system('nmap -p 80-1024 {} {}'.format(whatSubnet(), generateReports()))
 
 def webScan():
-	os.system('nmap -p 80,443 {}'.format(whatSubnet()))
+	os.system('nmap -p 80,443 {} {}'.format(whatSubnet(), generateReports()))
 	
 def mostCommon():
-	os.system('nmap -F {}'.format(whatSubnet()))
+	os.system('nmap -F {} {}'.format(whatSubnet(), generateReports()))
 
 def dnsUDP():
-	os.system('nmap -sU -p 53 {}'.format(whatSubnet()))
+	os.system('nmap -sU -p 53 {} {}'.format(whatSubnet(), generateReports()))
 
 def singleHost():
-	os.system('nmap -v -Pn -sU -sT -p U:53,111,137,T:21-25,80,139,8080 {}'.format(whatSubnet()))
-
-def saveScan():
-	os.system('nmap -Pn {} {}'.format(whatSubnet(),generateReports()))
+	os.system('nmap -v -Pn -sU -sT -p U:53,111,137,T:21-25,80,139,8080 {} {}'.format(
+		whatSubnet(), generateReports()))
 
 
 #######################
@@ -119,14 +118,14 @@ def saveScan():
 #######################
 
 def whatSubnet():
-	subnet = input("""
+	subnet: str = input("""
 Please enter an ip or subnet to scan:
 		""")
 	return subnet
 
 
 def generateReports():
-	rep_choice = input("""
+	rep_choice: str = input("""
 Would you like to export output to a file? y/n
 		""")
 	if rep_choice == "y":
@@ -135,7 +134,7 @@ Please specify a filename:
 			""")
 		return "-oA {}".format(filename)
 	else:
-		return
+		return ""
 		
 #######################
 #Initialize the script#
